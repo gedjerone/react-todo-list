@@ -1,8 +1,6 @@
-# React + Vite
+# Реализовать приложение на базе Create React App — страницу со списком дел (Todo list):
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Содержание одного дела — небольшой текст;
+2. Использовать JSON Placeholder с ручкой (endpoint) «todos»;
+3. Реализовать только вывод списка;
+4. Дизайн на усмотрение разработчика (но должен быть аккуратный, приятный на вид).
