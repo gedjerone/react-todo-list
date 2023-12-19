@@ -1,26 +1,18 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { ref, update } from 'firebase/database'
+import { db } from '../firebase.js'
 
 export const usePatchTodo = () => {
     const [todo, setTodo] = useState({})
     const [initial, setInitial] = useState(true)
 
-    const patchTodo = async () => {
-        const data = { [todo?.field]: todo?.value }
-        try {
-            await axios.patch(`http://localhost:5500/todos/${todo.id}`, data, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     useEffect(() => {
+        const todoDbRef = ref(db, `todos/${todo.id}`)
+
         if (!initial) {
-            patchTodo()
+            update(todoDbRef, {
+                [todo.field]: todo?.value
+            })
         } else {
             setInitial(false)
         }

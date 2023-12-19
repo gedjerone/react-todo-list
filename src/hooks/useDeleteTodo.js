@@ -1,21 +1,16 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { ref, remove } from 'firebase/database'
+import { db } from '../firebase.js'
 
 export const useDeleteTodo = () => {
-    const [id, setId] = useState({})
+    const [id, setId] = useState(0)
     const [initial, setInitial] = useState(true)
 
-    const deleteTodo = async () => {
-        try {
-            await axios.delete(`http://localhost:5500/todos/${id}`)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     useEffect(() => {
+        const todoDbRef = ref(db, `todos/${id}`)
+
         if (!initial) {
-            deleteTodo()
+            remove(todoDbRef)
         } else {
             setInitial(false)
         }

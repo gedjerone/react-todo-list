@@ -6,7 +6,7 @@ import { CreateNewTodoModal } from './components/CreateNewTodoModal.jsx'
 import { useState } from 'react'
 
 export const App = () => {
-    const { todos, isLoading, setQuery, sorted, setSorted } = useGetTodos(100)
+    const { todos, isLoading, setQuery, sorted, setSorted } = useGetTodos()
 
     const [isOpenModal, setOpenModal] = useState(false)
 
@@ -19,15 +19,10 @@ export const App = () => {
                     sorted={sorted}
                     setSorted={setSorted}
                 />
-                <TodoList
-                    isLoading={isLoading}
-                    todos={todos}
-                    setQuery={setQuery}
-                />
+                <TodoList isLoading={isLoading} todos={todos} />
                 <CreateNewTodoModal
                     onClose={setOpenModal}
                     isOpen={isOpenModal}
-                    setQuery={setQuery}
                 />
             </div>
         </>

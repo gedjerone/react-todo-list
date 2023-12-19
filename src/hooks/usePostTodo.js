@@ -1,25 +1,19 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { db } from '../firebase.js'
+import { push, ref } from 'firebase/database'
 
 export const usePostTodo = () => {
     const [todo, setTodo] = useState({})
     const [initial, setInitial] = useState(true)
 
-    const postTodo = async () => {
-        try {
-            await axios.post(`http://localhost:5500/todos?title_like`, todo, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     useEffect(() => {
+        const todosDbRef = ref(db, 'todos')
+
         if (!initial) {
-            postTodo()
+            push(todosDbRef, {
+                title: todo.title,
+                completed: todo.completed
+            })
         } else {
             setInitial(false)
         }
