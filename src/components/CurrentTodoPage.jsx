@@ -65,78 +65,87 @@ export const CurrentTodoPage = () => {
 
     return (
         <>
-            <Flex className="p-4 flex-col items-start justify-center gap-8 max-w-4xl mx-auto">
-                <Flex className="justify-between w-full items-center">
-                    <Link to="/">
-                        <Button
-                            leftIcon={<ArrowBackIcon />}
-                            variant="transparent"
-                        >
-                            Back
-                        </Button>
-                    </Link>
-                    <ButtonGroup size="sm" isAttached variant="outline">
-                        {todo.completed ? (
+            <Skeleton isLoaded={!isLoading}>
+                <Flex className="p-4 flex-col items-start justify-center gap-8 max-w-4xl mx-auto">
+                    <Flex className="justify-between w-full items-center">
+                        <Link to="/">
                             <Button
-                                leftIcon={<CheckCircleIcon />}
-                                color="teal"
-                                onClick={() => handleComplete(!todo.completed)}
+                                leftIcon={<ArrowBackIcon />}
+                                variant="transparent"
                             >
-                                Complete
+                                Back
                             </Button>
-                        ) : (
+                        </Link>
+                        <ButtonGroup size="sm" isAttached variant="outline">
+                            {todo.completed ? (
+                                <Button
+                                    leftIcon={<CheckCircleIcon />}
+                                    color="teal"
+                                    onClick={() =>
+                                        handleComplete(!todo.completed)
+                                    }
+                                >
+                                    Complete
+                                </Button>
+                            ) : (
+                                <Button
+                                    leftIcon={<SmallCloseIcon />}
+                                    color="pink"
+                                    onClick={() =>
+                                        handleComplete(!todo.completed)
+                                    }
+                                >
+                                    Uncomplete
+                                </Button>
+                            )}
                             <Button
-                                leftIcon={<SmallCloseIcon />}
-                                color="pink"
-                                onClick={() => handleComplete(!todo.completed)}
+                                leftIcon={<EditIcon />}
+                                onClick={() => handleEdit(!editable)}
                             >
-                                Uncomplete
+                                Edit
                             </Button>
-                        )}
-                        <Button
-                            leftIcon={<EditIcon />}
-                            onClick={() => handleEdit(!editable)}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            leftIcon={<DeleteIcon />}
-                            onClick={() => handleDelete()}
-                        >
-                            Delete
-                        </Button>
-                    </ButtonGroup>
+                            <Button
+                                leftIcon={<DeleteIcon />}
+                                onClick={() => handleDelete()}
+                            >
+                                Delete
+                            </Button>
+                        </ButtonGroup>
+                    </Flex>
+                    <Flex className="flex-col items-start justify-center gap-4 ml-4">
+                        <Skeleton isLoaded={!isEdit}>
+                            {editable ? (
+                                <InputGroup>
+                                    <Input
+                                        placeholder={todo.title}
+                                        ref={focus}
+                                    />
+                                    <InputRightElement>
+                                        <Tooltip
+                                            label="Save todo"
+                                            openDelay={300}
+                                            closeDelay={100}
+                                        >
+                                            <IconButton
+                                                aria-label="Save todo"
+                                                variant=""
+                                                size="sm"
+                                                icon={<CheckCircleIcon />}
+                                                onClick={() => handleSave()}
+                                            />
+                                        </Tooltip>
+                                    </InputRightElement>
+                                </InputGroup>
+                            ) : (
+                                <Text as="h3" fontSize="24px" noOfLines={1}>
+                                    {todo.title}
+                                </Text>
+                            )}
+                            <Text>{todo?.description}</Text>
+                        </Skeleton>
+                    </Flex>
                 </Flex>
-                <Flex className="flex-col items-start justify-center gap-4 ml-4">
-                    <Skeleton isLoaded={!isEdit}>
-                        {editable ? (
-                            <InputGroup>
-                                <Input placeholder={todo.title} ref={focus} />
-                                <InputRightElement>
-                                    <Tooltip
-                                        label="Save todo"
-                                        openDelay={300}
-                                        closeDelay={100}
-                                    >
-                                        <IconButton
-                                            aria-label="Save todo"
-                                            variant=""
-                                            size="sm"
-                                            icon={<CheckCircleIcon />}
-                                            onClick={() => handleSave()}
-                                        />
-                                    </Tooltip>
-                                </InputRightElement>
-                            </InputGroup>
-                        ) : (
-                            <Text as="h3" fontSize="24px" noOfLines={1}>
-                                {todo.title}
-                            </Text>
-                        )}
-                        <Text>{todo?.description}</Text>
-                    </Skeleton>
-                </Flex>
-            </Flex>
+            </Skeleton>
         </>
     )
 }
