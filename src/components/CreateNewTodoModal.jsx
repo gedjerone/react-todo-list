@@ -13,7 +13,7 @@ import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { usePostTodo } from '../hooks/usePostTodo.js'
 
-export const CreateNewTodoModal = ({ isOpen, onClose }) => {
+export const CreateNewTodoModal = ({ isOpen, onClose, setQuery }) => {
     const newTodo = useRef('')
 
     const { setTodo } = usePostTodo()
@@ -24,6 +24,7 @@ export const CreateNewTodoModal = ({ isOpen, onClose }) => {
             completed: false
         }
         setTodo(newTodo)
+        setQuery('@update')
         onClose(!isOpen)
     }
 
@@ -57,5 +58,6 @@ export const CreateNewTodoModal = ({ isOpen, onClose }) => {
 
 CreateNewTodoModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    setQuery: PropTypes.func.isRequired
 }

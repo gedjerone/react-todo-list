@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export const usePatchTodo = () => {
-    const [todo, setTodo] = useState({})
+    const [todo, editTodo] = useState({})
     const [initial, setInitial] = useState(true)
+    const [isEdit, setIsEdit] = useState(false)
 
     const patchTodo = async () => {
         const data = { [todo?.field]: todo?.value }
@@ -13,6 +14,7 @@ export const usePatchTodo = () => {
                     'Content-Type': 'application/json'
                 }
             })
+            setIsEdit(false)
         } catch (error) {
             console.error(error)
         }
@@ -20,11 +22,12 @@ export const usePatchTodo = () => {
 
     useEffect(() => {
         if (!initial) {
+            setIsEdit(true)
             patchTodo()
         } else {
             setInitial(false)
         }
     }, [todo])
 
-    return { setTodo }
+    return { editTodo, isEdit }
 }

@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react'
-import { db } from '../firebase.js'
-import { onValue, ref } from 'firebase/database'
+import axios from 'axios'
 
-export const useGetTodos = () => {
+export const useGetTodos = (limit = 100) => {
     const [todos, setTodos] = useState([])
     const [sorted, setSorted] = useState('none')
     const [query, setQuery] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const getTodos = async (queryString) => {
+        try {
+            const { data } = await axios.get(
+                `http://localhost:5500/todos?title_like=${queryString}&limit=${limit}`
+            )
+            setTodos(data.reverse())
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const sortTitle = (a, b) => {
         if (a.title < b.title) {
@@ -29,28 +41,15 @@ export const useGetTodos = () => {
     }
 
     useEffect(() => {
-        const todosDbRef = ref(db, 'todos')
-
-        return onValue(todosDbRef, (snapshot) => {
-            const loadedTodos = Object.entries(snapshot.val()).reverse()
-            const todosArray = loadedTodos.map((value) => {
-                return {
-                    id: value[0],
-                    title: value[1].title,
-                    completed: value[1].completed
-                }
-            })
-
-            setTodos(
-                todosArray.filter((e) => {
-                    if (e && typeof e !== 'undefined') {
-                        return e.title.includes(query)
-                    }
-                })
-            )
-            setIsLoading(false)
-        })
-    }, [query])
+        if (query === '@update') {
+            setIsLoading(true)
+            getTodos('')
+            setQuery('')
+        } else {
+            setIsLoading(true)
+            getTodos(query)
+        }
+    }, [query, limit])
 
     return {
         todos: sortedTodos(),
