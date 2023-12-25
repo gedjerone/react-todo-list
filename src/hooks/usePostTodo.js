@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import { TodosContext } from '../todos-context.js'
 
 export const usePostTodo = () => {
     const [todo, setTodo] = useState({})
     const [initial, setInitial] = useState(true)
+    const { getTodos, query } = useContext(TodosContext)
 
     const postTodo = async () => {
         try {
@@ -12,6 +14,7 @@ export const usePostTodo = () => {
                     'Content-Type': 'application/json'
                 }
             })
+            getTodos(query)
         } catch (error) {
             console.error(error)
         }

@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import { TodosContext } from '../todos-context.js'
 
 export const usePatchTodo = () => {
     const [todo, setTodo] = useState({})
     const [initial, setInitial] = useState(true)
+    const { getTodos, query } = useContext(TodosContext)
 
     const patchTodo = async () => {
         const data = { [todo?.field]: todo?.value }
@@ -13,6 +15,7 @@ export const usePatchTodo = () => {
                     'Content-Type': 'application/json'
                 }
             })
+            getTodos(query)
         } catch (error) {
             console.error(error)
         }

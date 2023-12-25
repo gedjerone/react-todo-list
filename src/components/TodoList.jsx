@@ -1,8 +1,11 @@
 import { Flex, Skeleton } from '@chakra-ui/react'
 import { Todo } from './Todo.jsx'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
+import { TodosContext } from '../todos-context.js'
 
-export const TodoList = ({ isLoading, todos, setQuery }) => {
+export const TodoList = () => {
+    const { todos, isLoading } = useContext(TodosContext)
+
     return (
         <>
             <Skeleton isLoaded={!isLoading} height="120px" fadeDuration={1}>
@@ -14,7 +17,6 @@ export const TodoList = ({ isLoading, todos, setQuery }) => {
                                 id={todo?.id}
                                 title={todo?.title}
                                 isCompleted={todo?.completed}
-                                setQuery={setQuery}
                             />
                         )
                     })}
@@ -22,10 +24,4 @@ export const TodoList = ({ isLoading, todos, setQuery }) => {
             </Skeleton>
         </>
     )
-}
-
-TodoList.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    todos: PropTypes.array.isRequired,
-    setQuery: PropTypes.func.isRequired
 }

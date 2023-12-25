@@ -15,7 +15,7 @@ import { useRef, useState } from 'react'
 import { usePatchTodo } from '../hooks/usePatchTodo.js'
 import { useDeleteTodo } from '../hooks/useDeleteTodo.js'
 
-export const Todo = ({ id, title, isCompleted, setQuery }) => {
+export const Todo = ({ id, title, isCompleted }) => {
     const [editable, setEditable] = useState(false)
     const focus = useRef(null)
     const { setTodo } = usePatchTodo()
@@ -37,7 +37,6 @@ export const Todo = ({ id, title, isCompleted, setQuery }) => {
             field: 'title',
             value: focus.current.value
         })
-        setQuery('@update')
     }
 
     const handleComplete = (value) => {
@@ -46,12 +45,10 @@ export const Todo = ({ id, title, isCompleted, setQuery }) => {
             field: 'completed',
             value: value
         })
-        setQuery('@update')
     }
 
     const handleDelete = () => {
         setId(id)
-        setQuery('@update')
     }
 
     return (
@@ -112,6 +109,5 @@ export const Todo = ({ id, title, isCompleted, setQuery }) => {
 Todo.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    isCompleted: PropTypes.bool.isRequired,
-    setQuery: PropTypes.func.isRequired
+    isCompleted: PropTypes.bool.isRequired
 }

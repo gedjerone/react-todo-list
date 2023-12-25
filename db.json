@@ -13,23 +13,17 @@
     {
       "id": 3,
       "title": "fugiat veniam minus",
-      "completed": false
+      "completed": true
     },
     {
       "id": 4,
       "title": "et porro tempora 2",
-      "completed": true
-    },
-    {
-      "id": 13
-    },
-    {
-      "id": 14
+      "completed": false
     },
     {
       "title": "test",
-      "completed": false,
-      "id": 15
+      "completed": true,
+      "id": 5
     }
   ]
 }

@@ -41,19 +41,15 @@ export const useGetTodos = (limit = 100) => {
     }
 
     useEffect(() => {
-        if (query === '@update') {
-            setIsLoading(true)
-            getTodos('')
-            setQuery('')
-        } else {
-            setIsLoading(true)
-            getTodos(query)
-        }
+        setIsLoading(true)
+        getTodos(query)
     }, [query, limit])
 
     return {
         todos: sortedTodos(),
+        getTodos,
         isLoading,
+        query,
         setQuery,
         sorted,
         setSorted
