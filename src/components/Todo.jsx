@@ -1,18 +1,16 @@
 import { Checkbox, Flex, Text } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { usePatchTodo } from '../hooks/usePatchTodo.js'
+import {useDispatch} from "react-redux";
+import {patchTodo} from "../actions/index.js";
 
-export const Todo = ({ id, title, isCompleted, setQuery }) => {
-    const { editTodo } = usePatchTodo()
-
+export const Todo = ({ id, title, isCompleted }) => {
+    const dispatch = useDispatch()
     const handleComplete = (value) => {
-        editTodo({
+        dispatch(patchTodo({
             id: id,
-            field: 'completed',
-            value: value
-        })
-        setQuery('@update')
+            completed: value
+        }))
     }
 
     return (
@@ -33,8 +31,7 @@ export const Todo = ({ id, title, isCompleted, setQuery }) => {
 }
 
 Todo.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired,
-    setQuery: PropTypes.func.isRequired
 }

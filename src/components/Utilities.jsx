@@ -14,7 +14,8 @@ import {
     TriangleUpIcon
 } from '@chakra-ui/icons'
 import { useDebounce } from '../hooks/useDebounce.js'
-import PropTypes from 'prop-types'
+import { useDispatch } from "react-redux";
+import { fetchTodos } from "../actions/index.js";
 
 const sortedIcon = new Map([
     ['none', <MinusIcon key="none" />],
@@ -22,32 +23,36 @@ const sortedIcon = new Map([
     ['desc', <TriangleDownIcon key="desc" />]
 ])
 
-export const Utilities = ({ setQuery, sorted, setSorted }) => {
+export const Utilities = () => {
+    const [firstLoaded, setFirstLoaded] = useState(true);
     const [inputQuery, setInputQuery] = useState('')
     const debounceTimer = useDebounce(inputQuery, 500)
-
+    const dispatch = useDispatch()
+    const [sorted, setSorted] = useState('none')
     const handleSort = () => {
-        switch (sorted) {
-            case 'none':
-                setSorted('asc')
-                break
-            case 'asc':
-                setSorted('desc')
-                break
-            case 'desc':
-                setSorted('none')
-                break
-            default:
-                break
+        if (sorted === 'none' || sorted === 'desc') {
+            setSorted('asc')
+            dispatch({
+                type: 'SORT_TODOS',
+                payload: 'asc'
+            })
+        }
+        if (sorted === 'asc') {
+            setSorted('desc')
+            dispatch({
+                type: 'SORT_TODOS',
+                payload: 'desc'
+            })
         }
     }
-
     const handleSearch = (value) => {
         setInputQuery(value)
     }
-
     useEffect(() => {
-        setQuery(inputQuery)
+        if (!firstLoaded) {
+            dispatch(fetchTodos(inputQuery))
+        }
+        firstLoaded && setFirstLoaded(false)
     }, [debounceTimer])
 
     return (
@@ -83,10 +88,4 @@ export const Utilities = ({ setQuery, sorted, setSorted }) => {
             </Flex>
         </>
     )
-}
-
-Utilities.propTypes = {
-    setQuery: PropTypes.func.isRequired,
-    sorted: PropTypes.string.isRequired,
-    setSorted: PropTypes.func.isRequired
 }

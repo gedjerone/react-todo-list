@@ -1,11 +1,18 @@
-import { Flex, Skeleton } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
+import {useDispatch, useSelector} from "react-redux";
 import { Todo } from './Todo.jsx'
-import PropTypes from 'prop-types'
+import {useEffect} from "react";
+import {fetchTodos} from "../actions/index.js";
 
-export const TodoList = ({ isLoading, todos, setQuery }) => {
+export const TodoList = () => {
+    const dispatch = useDispatch()
+    const todos = useSelector(state => state.todos)
+    useEffect(() => {
+        dispatch(fetchTodos())
+    }, []);
+
     return (
         <>
-            <Skeleton isLoaded={!isLoading} height="120px" fadeDuration={1}>
                 <Flex className="flex-col gap-2 mt-4">
                     {todos.map((todo) => {
                         return (
@@ -14,18 +21,10 @@ export const TodoList = ({ isLoading, todos, setQuery }) => {
                                 id={todo?.id}
                                 title={todo?.title}
                                 isCompleted={todo?.completed}
-                                setQuery={setQuery}
                             />
                         )
                     })}
                 </Flex>
-            </Skeleton>
         </>
     )
-}
-
-TodoList.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    todos: PropTypes.array.isRequired,
-    setQuery: PropTypes.func.isRequired
 }

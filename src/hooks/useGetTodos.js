@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export const useGetTodos = (limit = 100) => {
+export const useGetTodos = () => {
     const [todos, setTodos] = useState([])
     const [sorted, setSorted] = useState('none')
     const [query, setQuery] = useState('')
@@ -10,7 +10,7 @@ export const useGetTodos = (limit = 100) => {
     const getTodos = async (queryString) => {
         try {
             const { data } = await axios.get(
-                `http://localhost:5500/todos?title_like=${queryString}&limit=${limit}`
+                `http://localhost:5500/todos?title_like=${queryString}&_limit=100`
             )
             setTodos(data.reverse())
         } catch (error) {
